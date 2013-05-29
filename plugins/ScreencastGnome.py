@@ -84,8 +84,10 @@
 
   </interface>
 """
-from ScreencastBase import ScreencastBase
+from ScreencastBase import ScreencastBase, ScreencastResult
+import const
 import dbus
+import os
 
 BUS_NAME = 'org.gnome.Shell.Screencast'
 BUS_PATH = '/org/gnome/Shell/Screencast'
@@ -106,7 +108,7 @@ class ScreencastGnome(ScreencastBase):
 
     def Screencast(self):
         succ, filename = self._proxy.Screencast("/home/jmoskovc/screencast.ogv", {})
-        return filename
+        return ScreencastResult(succ, filename)
 
     def ScreencastArea(self):
         raise NotImplementedError
@@ -115,4 +117,7 @@ class ScreencastGnome(ScreencastBase):
         return self._proxy.StopScreencast()
 
     def IsSuitable(self):
-        return True
+        if os.getenv("DESKTOP_SESSION") == "gnome":
+            return const.SUITABLE_PREFERED
+        else:
+            return const.SUITABLE_NOT_SUITABLE

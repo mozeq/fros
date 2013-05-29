@@ -1,3 +1,7 @@
+#! /bin/python
+# -*- coding: utf-8 -*-
+
+
 import re
 import os
 from ScreencastBase import ScreencastBase
@@ -15,12 +19,13 @@ def find_plugins():
     for plugin in ScreencastBase.__subclasses__():
         try:
             instance = plugin()
-            plugins.append(instance)
+            if instance.IsSuitable() > 0:  # append only suitable plugins
+                plugins.append(instance)
         except Exception, ex:
             print plugin, ex
             pass  # ignore failed plugins, they are not usable for current env
 
-    return plugins
+    return sorted(plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
 
 
 def load_plugins(dir="plugins"):
@@ -37,6 +42,9 @@ if __name__ == "__main__":
     plugins = load_plugins("plugins")
     print plugins
     for plugin in plugins:
-        print plugin.Screencast()
+        result = plugin.Screencast()
         raw_input("Recording...")
         plugin.StopScreencast()
+        if result.success:
+            print "Screencast was saved to: '{0!s}'".format(result.filename)
+            break  # screencasting is done, no need to run another plugin

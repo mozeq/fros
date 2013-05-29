@@ -1,4 +1,5 @@
 from ScreencastBase import ScreencastBase
+import const
 
 
 class ScreencastRecordMyDesktop(ScreencastBase):
@@ -13,3 +14,6 @@ class ScreencastRecordMyDesktop(ScreencastBase):
 
     def StopScreencast(self):
         print "Stop ScreencastRecordMyDesktop"
+
+    def IsSuitable(self):
+        return const.SUITABLE_DEFAULT  # 1 is default
