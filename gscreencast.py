@@ -63,7 +63,7 @@ if __name__ == "__main__":
         print ("Usage: abrt-screencast -o OUTPUT_FILE")
         sys.exit(1)
 
-    print plugins[0]
+    info("Selected plugin: ", plugins[0])
     controls = Controls(plugins[0])
     controls.show_all()
     Gtk.main()
