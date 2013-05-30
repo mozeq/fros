@@ -11,7 +11,6 @@ from reportclient import _
 from froslogging import info, warn
 import os
 
-
 class Controls(Gtk.Window):
     #  selected plugin
     controller = None
@@ -86,6 +85,8 @@ class Controls(Gtk.Window):
 
     def __start_recording__(self, button):
         info("start recording")
-        self.controller.Screencast()
-        button.set_sensitive(False)
-        self.stop_button.set_sensitive(True)
+        res = self.controller.Screencast()
+        if res.success:
+            info("Capturing screencast to {0}".format(res.filename))
+            button.set_sensitive(False)
+            self.stop_button.set_sensitive(True)
