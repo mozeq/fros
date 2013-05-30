@@ -24,15 +24,19 @@ def getLogger():
 LOGGER = getLogger()
 
 
+def __args_to_str(*args):
+    return ",".join(map(str, args))
+
+
 def info(*args):
     if VERBOSITY:
-        LOGGER.info(",".join(map(str, args)))
+        LOGGER.info(__args_to_str(*args))
 
 
-def warn(msg):
+def warn(*args):
     if VERBOSITY:
-        LOGGER.warn(msg)
+        LOGGER.warn(__args_to_str(*args))
 
 
-def error(msg):
-    LOGGER.error(msg)
+def error(*args):
+    LOGGER.error(__args_to_str(*args))
