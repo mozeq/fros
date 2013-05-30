@@ -1,4 +1,4 @@
-from ScreencastBase import ScreencastBase
+from ScreencastBase import ScreencastBase, ScreencastResult
 import const
 import popen2
 import fcntl
@@ -67,6 +67,7 @@ class ScreencastRecordMyDesktop(ScreencastBase):
 
     def __init__(self, *args, **kwargs):
         super(ScreencastRecordMyDesktop, self).__init__(*args, **kwargs)
+        self.output = os.path.join(os.getcwd(), "screencast.ogv")
 
     def ScreencastArea(self):
         print "ScreencastArea ScreencastRecordMyDesktop"
@@ -96,6 +97,7 @@ class ScreencastRecordMyDesktop(ScreencastBase):
         #if self.recPid != None:
         #    stop_button.set_sensitive(True)
         #    button.set_sensitive(False)
+        return ScreencastResult(self.recPid is not None, self.output)
 
     def StopScreencast(self, end_handler):
         """
