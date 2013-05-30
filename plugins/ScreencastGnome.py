@@ -99,8 +99,9 @@ def getScreencastPluginInstance():
 
 
 class ScreencastGnome(ScreencastBase):
-    def __init__(self):
-        super(ScreencastGnome, self).__init__()
+
+    def __init__(self, *args, **kwargs):
+        super(ScreencastGnome, self).__init__(*args, **kwargs)
         bus = dbus.SessionBus()
         self._proxy = dbus.Interface(
             bus.get_object(
@@ -110,18 +111,27 @@ class ScreencastGnome(ScreencastBase):
             BUS_IFACE
         )
 
+        self.output = os.path.join(os.getcwd(), "screencast-%d-%t.webm")
+
     def Screencast(self):
-        succ, filename = self._proxy.Screencast("/home/jmoskovc/screencast.ogv", {})
+        succ, filename = self._proxy.ScreencastArea(self.x,
+                                                    self.y,
+                                                    self.width,
+                                                    self.height,
+                                                    self.output,
+                                                    {"framerate": 5}
+                                                    )
         return ScreencastResult(succ, filename)
 
     def ScreencastArea(self):
         raise NotImplementedError
 
-    def StopScreencast(self):
-        return self._proxy.StopScreencast()
+    def StopScreencast(self, end_handler):
+        self._proxy.StopScreencast()
+        end_handler()
 
     def IsSuitable(self):
-        if os.getenv("DESKTOP_SESSION") == "gnome":
+        if "gnome" in os.getenv("DESKTOP_SESSION"):
             return const.SUITABLE_PREFERED
         else:
             return const.SUITABLE_NOT_SUITABLE
