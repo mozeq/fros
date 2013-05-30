@@ -2,6 +2,10 @@ from ScreencastBase import ScreencastBase
 import const
 
 
+def getScreencastPluginInstance():
+    return ScreencastRecordMyDesktop()
+
+
 class ScreencastRecordMyDesktop(ScreencastBase):
     def __init__(self):
         super(ScreencastRecordMyDesktop, self).__init__()

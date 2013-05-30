@@ -5,6 +5,7 @@
 import re
 import os
 from ScreencastBase import ScreencastBase
+from froslogging import warn, info, set_verbosity, error
 
 #sys.path.append(sys.path[0]+ "/plugins")
 PLUGIN_DIR = "."
@@ -14,29 +15,28 @@ plugin_pattern = r"\w*\.py$"
 plugin_regexp = re.compile(plugin_pattern)
 
 
-def find_plugins():
+def load_plugins(plugin_dir="plugins"):
     plugins = []
-    for plugin in ScreencastBase.__subclasses__():
-        try:
-            instance = plugin()
-            if instance.IsSuitable() > 0:  # append only suitable plugins
-                plugins.append(instance)
-        except Exception, ex:
-            print plugin, ex
-            pass  # ignore failed plugins, they are not usable for current env
-
-    return sorted(plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
-
-
-def load_plugins(dir="plugins"):
-    for plugin in os.listdir(dir):
+    for plugin in os.listdir(plugin_dir):
         if plugin_regexp.match(plugin):
-            print "loading: ", plugin
-            __import__("%s.%s" % (dir, plugin[:-3]), None, None, [''])
+            info("loading: %s" % plugin)
+            try:
+                module = __import__("%s.%s" % (plugin_dir, plugin[:-3]), fromlist=["getScreencastPluginInstance"])
+                try:
+                    instance = module.getScreencastPluginInstance()
+                    if instance.IsSuitable() > 0:  # append only suitable plugins
+                        plugins.append(instance)
+                    info("Added plugin:", instance)
+                except Exception, ex:
+                    warn("'{0}' is not a plugin: '{1}'".format(plugin, ex))
+            except ImportError, ex:
+                warn("Module '{0}' doesn't provide getPluginInstance() function, so it's not a plugin: {1}".format(plugin, ex))
         else:
-            print "ignoring: ", plugin
+            #print "ignoring: ", plugin
+            pass
 
-    return find_plugins()
+    # return plugins sorted by their IsSuitable weight, the best match first
+    return sorted(plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
 
 if __name__ == "__main__":
     plugins = load_plugins("plugins")

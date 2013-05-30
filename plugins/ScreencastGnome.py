@@ -94,6 +94,10 @@ BUS_PATH = '/org/gnome/Shell/Screencast'
 BUS_IFACE = 'org.gnome.Shell.Screencast'
 
 
+def getScreencastPluginInstance():
+    return ScreencastGnome()
+
+
 class ScreencastGnome(ScreencastBase):
     def __init__(self):
         super(ScreencastGnome, self).__init__()

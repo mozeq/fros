@@ -1,4 +1,5 @@
 from plugins import const
+from froslogging import info
 
 
 class ScreencastResult(object):
