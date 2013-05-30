@@ -60,7 +60,7 @@ if __name__ == "__main__":
     try:
         output_file = sys.argv[1]
     except IndexError, ex:
-        print ("Usage: abrt-screencast -o OUTPUT_FILE")
+        print ("Usage: fros OUTPUT_FILE | is-available")
         sys.exit(1)
 
     info("Selected plugin: ", plugins[0])
