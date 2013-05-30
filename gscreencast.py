@@ -4,8 +4,10 @@
 
 import re
 import os
-from ScreencastBase import ScreencastBase
+import sys
 from froslogging import warn, info, set_verbosity, error
+from Controls import Controls
+from gi.repository import Gtk
 
 #sys.path.append(sys.path[0]+ "/plugins")
 PLUGIN_DIR = "."
@@ -39,12 +41,29 @@ def load_plugins(plugin_dir="plugins"):
     return sorted(plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
 
 if __name__ == "__main__":
+    verbose = 0
+    set_verbosity(1)
+    if len(sys.argv) < 2:
+        print ("Usage: {0} -o OUTPUT_FILE").format(sys.argv[0])
+        sys.exit(1)
+
+    output_file = None
     plugins = load_plugins("plugins")
-    print plugins
-    for plugin in plugins:
-        result = plugin.Screencast()
-        raw_input("Recording...")
-        plugin.StopScreencast()
-        if result.success:
-            print "Screencast was saved to: '{0!s}'".format(result.filename)
-            break  # screencasting is done, no need to run another plugin
+    if sys.argv[1] == "is-available":
+        exitcode = 0 if plugins else 1
+        sys.exit(exitcode)
+
+    if not plugins:
+        error("No suitable plugin found!")
+        sys.exit(1)
+
+    try:
+        output_file = sys.argv[1]
+    except IndexError, ex:
+        print ("Usage: abrt-screencast -o OUTPUT_FILE")
+        sys.exit(1)
+
+    print plugins[0]
+    controls = Controls(plugins[0])
+    controls.show_all()
+    Gtk.main()
