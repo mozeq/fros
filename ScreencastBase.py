@@ -2,6 +2,7 @@ from plugins import const
 from froslogging import info
 from gi.repository import Gdk
 import os
+import sys
 
 
 class ScreencastResult(object):
@@ -20,8 +21,16 @@ class ScreencastBase(object):
     height = None
     x = None
 
-    def __init__(self):
-        pass
+    def __dummy_progress__(self, percent):
+        sys.stdout.write("Processing: %.3i%%\r" % percent)
+        sys.stdout.flush()
+
+    def __init__(self, *args, **kwargs):
+        self.progress_update = kwargs.get("progress_update", self.__dummy_progress__)
+        self.output = kwargs.get("output", os.path.join(os.getcwd(), "screencast"))
+
+    def SetProgressUpdate(self, progress_cb):
+        self.progress_update = progress_cb
 
     def Screencast(self):
         raise NotImplementedError
@@ -36,7 +45,7 @@ class ScreencastBase(object):
     def IsSuitable(self):
         return const.SUITABLE_NOT_SUITABLE
 
-    def SelectArea(self, *args):
+    def SelectArea(self, widget, result_handler):
         """
         Calls xwinfo to get area which user would like to record
         """
@@ -79,3 +88,4 @@ class ScreencastBase(object):
 
         info(self.x, self.y, self.width, self.height)
         self.selected_area = (self.x, self.y, self.width, self.height)
+        result_handler(True)  # true means - area was selected

@@ -16,9 +16,20 @@ class Controls(Gtk.Window):
     #  selected plugin
     controller = None
 
+    def __update_progressbar(self, percent):
+        self.progress.set_visible(True)
+        self.progress.set_fraction(percent / 100)  # progressbar uses promiles
+        # xgettext:no-c-format
+        self.progress.set_text("Encoding: {0!s}% complete".format(percent))
+
+    def __area_selected(self, result):
+        if result is True:
+            self.rec_button.set_sensitive(True)
+
     def __init__(self, controller):
         Gtk.Window.__init__(self)
         self.controller = controller
+        self.controller.SetProgressUpdate(self.__update_progressbar)
         buttons_size_group = Gtk.SizeGroup(SizeGroupMode.BOTH)
         main_vbox = Gtk.VBox()
         main_hbox = Gtk.HBox()
@@ -44,16 +55,16 @@ class Controls(Gtk.Window):
         main_hbox.pack_start(self.stop_button, False, False, 0)
 
         #start button
-        rec_button = Gtk.Button(stock=Gtk.STOCK_MEDIA_RECORD)
-        rec_button.connect("clicked", self.__start_recording__, self.stop_button)
+        self.rec_button = Gtk.Button(stock=Gtk.STOCK_MEDIA_RECORD)
+        self.rec_button.connect("clicked", self.__start_recording__)
         # have to select window first
-        rec_button.set_sensitive(False)
-        buttons_size_group.add_widget(rec_button)
-        main_hbox.pack_start(rec_button, False, False, 0)
+        self.rec_button.set_sensitive(False)
+        buttons_size_group.add_widget(self.rec_button)
+        main_hbox.pack_start(self.rec_button, False, False, 0)
 
         # select button
         select_button = Gtk.Button(_("Select window"))
-        select_button.connect("clicked", self.controller.SelectArea, None)
+        select_button.connect("clicked", self.controller.SelectArea, self.__area_selected)
         buttons_size_group.add_widget(select_button)
         main_hbox.pack_start(select_button, False, False, 0)
 
@@ -68,10 +79,13 @@ class Controls(Gtk.Window):
 
         self.connect("destroy", Gtk.main_quit)
 
-    def __stop_recording__(self):
-        print "Stop recording:"
+    def __stop_recording__(self, button):
+        self.controller.StopScreencast(Gtk.main_quit)
+        button.set_sensitive(False)
+        self.rec_button.set_sensitive(True)
 
     def __start_recording__(self, button):
-        print "start recording"
+        info("start recording")
+        self.controller.Screencast()
         button.set_sensitive(False)
         self.stop_button.set_sensitive(True)
