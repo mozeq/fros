@@ -12,7 +12,6 @@ class ScreencastResult(object):
 
 
 class ScreencastBase(object):
-    selected_area = None
     wroot = None
     wwidth = None
     wheight = None
@@ -87,5 +86,4 @@ class ScreencastBase(object):
         self.height = height
 
         info(self.x, self.y, self.width, self.height)
-        self.selected_area = (self.x, self.y, self.width, self.height)
         result_handler(True)  # true means - area was selected
