@@ -20,12 +20,12 @@ class ScreencastBase(object):
     height = None
     x = None
 
-    def __dummy_progress__(self, percent):
+    def _dummy_progress(self, percent):
         sys.stdout.write("Processing: %.3i%%\r" % percent)
         sys.stdout.flush()
 
     def __init__(self, *args, **kwargs):
-        self.progress_update = kwargs.get("progress_update", self.__dummy_progress__)
+        self.progress_update = kwargs.get("progress_update", self._dummy_progress)
         self.output = kwargs.get("output", os.path.join(os.getcwd(), "screencast"))
 
     def SetProgressUpdate(self, progress_cb):
