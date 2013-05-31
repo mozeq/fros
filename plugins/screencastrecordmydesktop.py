@@ -1,4 +1,4 @@
-from ScreencastBase import ScreencastBase, ScreencastResult
+from screencastbase import ScreencastBase, ScreencastResult
 import const
 import popen2
 import fcntl

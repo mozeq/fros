@@ -6,7 +6,7 @@ import re
 import os
 import sys
 from froslogging import warn, info, set_verbosity, error
-from Controls import Controls
+from controls import Controls
 from gi.repository import Gtk
 
 #sys.path.append(sys.path[0]+ "/plugins")
