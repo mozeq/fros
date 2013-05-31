@@ -1,0 +1,63 @@
+#! /bin/python
+# -*- coding: utf-8 -*-
+
+
+import re
+import sys
+from pyfros.froslogging import warn, info, set_verbosity, error
+from pyfros.controls import Controls
+from gi.repository import Gtk
+from pyfros.plugins import *
+import pyfros.plugins as plugins
+
+#sys.path.append(sys.path[0]+ "/plugins")
+PLUGIN_DIR = "."
+#ignore_pattern = "(__init__.py)|(\w*\.pyc)"
+#ignore_regexp = re.compile(ignore_pattern)
+plugin_pattern = r"\w*\.py$"
+plugin_regexp = re.compile(plugin_pattern)
+
+
+def load_plugins():
+    loaded_plugins = []
+    import inspect
+    for name, obj in inspect.getmembers(plugins):
+        try:
+            plugin_instance = obj.getScreencastPluginInstance()
+            if plugin_instance.IsSuitable() > 0:  # append only suitable plugins
+                loaded_plugins.append(plugin_instance)
+                print("Added plugin:", plugin_instance)
+        except Exception, ex:
+            info("'{0}' is not a plugin: '{1}'".format(obj, ex))
+
+    # return plugins sorted by their IsSuitable weight, the best match first
+    return sorted(loaded_plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
+
+
+if __name__ == "__main__":
+    verbose = 0
+    set_verbosity(1)
+    if len(sys.argv) < 2:
+        print ("Usage: {0} -o OUTPUT_FILE").format(sys.argv[0])
+        sys.exit(1)
+
+    output_file = None
+    available_plugins = load_plugins()
+    if sys.argv[1] == "is-available":
+        exitcode = 0 if available_plugins else 1
+        sys.exit(exitcode)
+
+    if not available_plugins:
+        error("No suitable plugin found!")
+        sys.exit(1)
+
+    try:
+        output_file = sys.argv[1]
+    except IndexError, ex:
+        print ("Usage: fros OUTPUT_FILE | is-available")
+        sys.exit(1)
+
+    info("Selected plugin: ", available_plugins[0])
+    controls = Controls(available_plugins[0])
+    controls.show_all()
+    Gtk.main()

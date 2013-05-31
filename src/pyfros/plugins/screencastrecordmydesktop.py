@@ -1,4 +1,4 @@
-from screencastbase import ScreencastBase, ScreencastResult
+from pyfros.screencastbase import ScreencastBase, ScreencastResult
 import const
 import popen2
 import fcntl
@@ -6,7 +6,7 @@ import os
 import signal
 from gi.repository import GLib
 import re
-from froslogging import warn
+from pyfros.froslogging import warn
 
 
 def getScreencastPluginInstance():

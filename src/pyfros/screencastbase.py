@@ -37,7 +37,7 @@ class ScreencastBase(object):
     def ScreencastArea(self):
         raise NotImplementedError
 
-    def StopScreencast(self):
+    def StopScreencast(self, end_handler):
         raise NotImplementedError
 
     # whether the plugin is suitable for actual desktop

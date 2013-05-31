@@ -84,7 +84,7 @@
 
   </interface>
 """
-from screencastbase import ScreencastBase, ScreencastResult
+from pyfros.screencastbase import ScreencastBase, ScreencastResult
 import const
 import dbus
 import os
