@@ -89,3 +89,13 @@ class Controls(Gtk.Window):
             info("Capturing screencast to {0}".format(res.filename))
             button.set_sensitive(False)
             self.stop_button.set_sensitive(True)
+
+    def show_all(self, *args, **kwargs):
+        # pylint: disable=E1101
+        super(Controls, self).show_all(*args, **kwargs)
+        # pylint: disable=E1101
+        width, height = self.get_size()
+        # pylint: disable=E1101
+        self.move(self.wwidth - (width + 50), self.wheight - (height + 50))
+        # pylint: disable=E1101
+        self.present()  # move it on top or do some magic to drag the attention
