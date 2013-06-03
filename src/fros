@@ -11,6 +11,7 @@ from pyfros.plugins import *
 from pyfros.i18n import _
 from pyfros import i18n
 import pyfros.plugins as plugins
+import argparse
 
 #sys.path.append(sys.path[0]+ "/plugins")
 PLUGIN_DIR = "."
@@ -35,30 +36,21 @@ def load_plugins():
     # return plugins sorted by their IsSuitable weight, the best match first
     return sorted(loaded_plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)
 
-
 if __name__ == "__main__":
     # init internationalization
     i18n.init("fros")
-    verbose = 0
-    set_verbosity(1)
-    if len(sys.argv) < 2:
-        print ("Usage: {0} -o OUTPUT_FILE").format(sys.argv[0])
-        sys.exit(1)
 
-    output_file = None
+    commands = argparse.ArgumentParser('parent', description=_("Screencasting cmdline"))
+    commands.add_argument("--verbose", "-v", action="count", default=0)
+    commands.add_argument("--is-available", action="store_true", default=False)
+
+    args = commands.parse_args()
+    set_verbosity(args.verbose)
     available_plugins = load_plugins()
-    if sys.argv[1] == "is-available":
-        exitcode = 0 if available_plugins else 1
-        sys.exit(exitcode)
 
-    if not available_plugins:
-        error("No suitable plugin found!")
-        sys.exit(1)
-
-    try:
-        output_file = sys.argv[1]
-    except IndexError, ex:
-        print ("Usage: fros OUTPUT_FILE | is-available")
+    if args.is_available:
+        if available_plugins:
+            sys.exit(0)
         sys.exit(1)
 
     info("Selected plugin: ", available_plugins[0])
