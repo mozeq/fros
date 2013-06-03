@@ -3,11 +3,14 @@ Version:        1.0
 Release:        1%{?dist}
 Summary:        Universal screencasting fronted with pluggable support for various backends
 
+%global commit d4ac2c0bb5b077dd6322f1014d4d41fda2316aa2
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://github.com/mozeq/fros
 # this url is wrong, because github doesn't offer a space for downloadable archives :(
-Source:         https://github.com/mozeq/fros/%{name}-%{version}.tar.gz
+Source:         https://github.com/mozeq/fros/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
