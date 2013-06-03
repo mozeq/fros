@@ -29,12 +29,12 @@ def __args_to_str(*args):
 
 
 def info(*args):
-    if VERBOSITY:
+    if VERBOSITY > 1:
         LOGGER.info(__args_to_str(*args))
 
 
 def warn(*args):
-    if VERBOSITY:
+    if VERBOSITY > 0:
         LOGGER.warn(__args_to_str(*args))
 
 
