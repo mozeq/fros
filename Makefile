@@ -1,4 +1,4 @@
-RPM_DIRS = --define "_sourcedir `pwd`/dist" \
+RPM_DIRS = --define "_sourcedir `pwd`" \
 		   --define "_rpmdir `pwd`" \
 		   --define "_specdir `pwd`" \
 		   --define "_builddir `pwd`/rpmbuilddir" \
