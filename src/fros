@@ -26,7 +26,7 @@ def load_plugins():
             plugin_instance = obj.getScreencastPluginInstance()
             if plugin_instance.IsSuitable() > 0:  # append only suitable plugins
                 loaded_plugins.append(plugin_instance)
-                print("Added plugin:", plugin_instance)
+                info("Added plugin:", plugin_instance)
         except Exception, ex:
             info("'{0}' is not a plugin: '{1}'".format(obj, ex))
 
