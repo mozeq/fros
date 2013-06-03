@@ -7,9 +7,8 @@ from gi.repository import Gtk
 from gi.repository.Gtk import SizeGroupMode
 from gi.repository import Gdk
 
-from reportclient import _
-from froslogging import info, warn
-import os
+from pyfros.i18n import _
+from pyfros.froslogging import info
 
 class Controls(Gtk.Window):
     #  selected plugin

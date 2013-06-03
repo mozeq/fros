@@ -85,7 +85,7 @@
   </interface>
 """
 from pyfros.screencastbase import ScreencastBase, ScreencastResult
-import const
+import pyfros.plugins.const as const
 import dbus
 import os
 
@@ -98,6 +98,7 @@ def getScreencastPluginInstance():
     return ScreencastGnome()
 
 
+#pylint: disable=R0921
 class ScreencastGnome(ScreencastBase):
 
     def __init__(self, *args, **kwargs):

@@ -4,9 +4,11 @@
 
 import re
 import sys
-from pyfros.froslogging import warn, info, set_verbosity, error
+from pyfros.froslogging import info, set_verbosity
 from pyfros.controls import Controls
+#pylint: disable=E0611
 from gi.repository import Gtk
+#pylint: disable=W0401
 from pyfros.plugins import *
 from pyfros.i18n import _
 from pyfros import i18n
@@ -24,12 +26,14 @@ plugin_regexp = re.compile(plugin_pattern)
 def load_plugins():
     loaded_plugins = []
     import inspect
+    #pylint: disable=W0612
     for name, obj in inspect.getmembers(plugins):
         try:
             plugin_instance = obj.getScreencastPluginInstance()
             if plugin_instance.IsSuitable() > 0:  # append only suitable plugins
                 loaded_plugins.append(plugin_instance)
                 info("Added plugin:", plugin_instance)
+        #pylint: disable=W0703
         except Exception, ex:
             info("'{0}' is not a plugin: '{1}'".format(obj, ex))
 
