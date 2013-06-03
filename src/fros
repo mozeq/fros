@@ -8,6 +8,8 @@ from pyfros.froslogging import warn, info, set_verbosity, error
 from pyfros.controls import Controls
 from gi.repository import Gtk
 from pyfros.plugins import *
+from pyfros.i18n import _
+from pyfros import i18n
 import pyfros.plugins as plugins
 
 #sys.path.append(sys.path[0]+ "/plugins")
@@ -35,6 +37,8 @@ def load_plugins():
 
 
 if __name__ == "__main__":
+    # init internationalization
+    i18n.init("fros")
     verbose = 0
     set_verbosity(1)
     if len(sys.argv) < 2:
