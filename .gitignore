@@ -4,3 +4,7 @@
 build/*
 dist/*
 fros.egg*
+rpmbuilddir/*
+*.rpm
+noarch/*
+*.gz
