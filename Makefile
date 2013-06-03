@@ -4,6 +4,9 @@ RPM_DIRS = --define "_sourcedir `pwd`" \
 		   --define "_builddir `pwd`/rpmbuilddir" \
 		   --define "_srcrpmdir `pwd`"
 
+download:
+	wget https://github.com/mozeq/fros/archive/`git rev-parse HEAD`/fros-1.0-`git rev-parse HEAD | cut -c -7`.tar.gz
+
 sdist:
 	python setup.py sdist
 
