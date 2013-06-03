@@ -1,9 +1,10 @@
 from pyfros.screencastbase import ScreencastBase, ScreencastResult
-import const
+import pyfros.plugins.const as const
 import popen2
 import fcntl
 import os
 import signal
+#pylint: disable=E0611
 from gi.repository import GLib
 import re
 from pyfros.froslogging import warn
@@ -15,6 +16,10 @@ def getScreencastPluginInstance():
 
 class ScreencastRecordMyDesktop(ScreencastBase):
     r = re.compile(r'.(?P<num>\d+).')
+    recorapp = None
+    enc_completed = None
+    recPid = None
+    screencast_done = None
 
     # pylint: disable=W0613
     def enc_progress(self, source, condition):

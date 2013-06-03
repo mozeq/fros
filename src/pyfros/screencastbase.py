@@ -1,5 +1,6 @@
-from plugins import const
-from froslogging import info
+from pyfros.plugins import const
+from pyfros.froslogging import info
+#pylint: disable=E0611
 from gi.repository import Gdk
 import os
 import sys
@@ -19,11 +20,13 @@ class ScreencastBase(object):
     width = None
     height = None
     x = None
+    y = None
 
     def _dummy_progress(self, percent):
         sys.stdout.write("Processing: %.3i%%\r" % percent)
         sys.stdout.flush()
 
+    #pylint: disable=W0613
     def __init__(self, *args, **kwargs):
         self.progress_update = kwargs.get("progress_update", self._dummy_progress)
         self.output = kwargs.get("output", os.path.join(os.getcwd(), "screencast"))
