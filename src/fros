@@ -46,7 +46,9 @@ if __name__ == "__main__":
 
     commands = argparse.ArgumentParser('parent', description=_("Screencasting cmdline"))
     commands.add_argument("--verbose", "-v", action="count", default=0)
-    commands.add_argument("--is-available", action="store_true", default=False)
+    commands.add_argument("--is-available", action="store_true",
+        help=_("check if the current environment supports screencasting (0: is available, 1: not available)"),
+        default=False)
 
     args = commands.parse_args()
     set_verbosity(args.verbose)
