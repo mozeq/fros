@@ -1,0 +1,25 @@
+.\" Process this file with
+.\" groff -man -Tascii fros.1
+.\"
+.TH fros 1 "JUNE 2013" Linux "User Manuals"
+.SH NAME
+fros \- universal screencasting fronted with pluggable support for various backends
+.SH SYNOPSIS
+.B fros [-h] [--v] [--is-available]
+.SH DESCRIPTION
+.B fros
+Universal screencasting fronted with pluggable support for various backends.
+The goal is to provide an unified access to as many screencasting backends as
+possible while still keeping the same user interface so the user experience
+while across various desktops and screencasting programs is seamless.
+.SH OPTIONS
+.IP "-h, --help"
+show help message and exit
+.IP "-v, --verbose"
+makes the output more verbose/talkative
+.IP --is-available
+check if the current environment supports screencasting (0: is available, 1: not available)
+.SH AUTHOR
+Jiri Moskovc <jmoskovc at redhat dot com>
+.SH "SEE ALSO"
+.BR recordmydesktop (1)

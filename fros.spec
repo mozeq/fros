@@ -61,12 +61,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %doc README
+%dir %{python_sitelib}/pyfros
 %{python_sitelib}/pyfros/*.py*
+%dir %{python_sitelib}/pyfros/plugins
 %{python_sitelib}/pyfros/plugins/__init__.*
 %{python_sitelib}/pyfros/plugins/const.*
 # fros-1.0-py2.7.egg-info
+%dir %{python_sitelib}/%{name}-%{version}-py2.7.egg-info
 %{python_sitelib}/%{name}-%{version}-py2.7.egg-info/*
 %{_bindir}/fros
+%{_mandir}/man1/%{name}.1*
 
 %files recordmydesktop
 %{python_sitelib}/pyfros/plugins/*recordmydesktop.*
