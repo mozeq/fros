@@ -48,15 +48,10 @@ fros plugin for screencasting using Gnome3 integrated screencaster
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 %install
-rm -rf %{buildroot}
-
 %{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 %check
 %{__python} setup.py test
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %files
