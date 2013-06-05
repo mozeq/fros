@@ -4,7 +4,7 @@ setup(
     version='1.0',
     author="Jiri Moskovcak",
     author_email="jmoskovc@redhat.com",
-    description=("Universal screencasting fronted with pluggable support "
+    description=("Universal screencasting frontend with pluggable support "
                  "for various backends"),
     license = "GPLv2+",
     url = "https://github.com/mozeq/fros",

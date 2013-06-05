@@ -1,9 +1,9 @@
 Name:           fros
 Version:        1.0
 Release:        1%{?dist}
-Summary:        Universal screencasting fronted with pluggable support for various backends
+Summary:        Universal screencasting frontend with pluggable support for various backends
 
-%global commit ea62d88880605e5167cb9ec7a343c4f022910df8
+%global commit 6168e025b9abd87835190f9aae31afdb5c5e4b27
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Group:          Applications/System
@@ -20,7 +20,7 @@ BuildRequires:  python3-setuptools
 %endif # if with_python3
 
 %description
-Universal screencasting fronted with pluggable support for various backends.
+Universal screencasting frontend with pluggable support for various backends.
 The goal is to provide an unified access to as many screencasting backends as
 possible while still keeping the same user interface so the user experience
 while across various desktops and screencasting programs is seamless.
