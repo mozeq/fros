@@ -15,9 +15,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-%if 0%{?with_python3}
-BuildRequires:  python3-setuptools
-%endif # if with_python3
 
 %description
 Universal screencasting frontend with pluggable support for various backends.
