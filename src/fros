@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-import re
 import sys
 from pyfros.froslogging import info, set_verbosity
 from pyfros.controls import Controls
@@ -15,12 +14,7 @@ from pyfros import i18n
 import pyfros.plugins as plugins
 import argparse
 
-#sys.path.append(sys.path[0]+ "/plugins")
 PLUGIN_DIR = "."
-#ignore_pattern = "(__init__.py)|(\w*\.pyc)"
-#ignore_regexp = re.compile(ignore_pattern)
-plugin_pattern = r"\w*\.py$"
-plugin_regexp = re.compile(plugin_pattern)
 
 
 def load_plugins():
