@@ -11,5 +11,5 @@ setup(
     scripts = ['src/fros'],
     packages=['pyfros', 'pyfros.plugins'],
     package_dir = {'pyfros': 'src/pyfros/', 'pyfros.plugins': 'src/pyfros/plugins'},
-    #data_files = []
+    data_files = [('share/man/man1',['fros.1'])]
 )
