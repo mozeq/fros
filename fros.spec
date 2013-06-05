@@ -55,7 +55,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 
 %files
-%doc README
+%doc README COPYING
 %dir %{python_sitelib}/pyfros
 %{python_sitelib}/pyfros/*.py*
 %dir %{python_sitelib}/pyfros/plugins
