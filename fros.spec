@@ -15,9 +15,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-%if 0%{?with_python3}
-BuildRequires:  python3-setuptools
-%endif # if with_python3
 
 %description
 Universal screencasting frontend with pluggable support for various backends.
@@ -28,7 +25,7 @@ while across various desktops and screencasting programs is seamless.
 %package recordmydesktop
 Summary: fros plugin for screencasting using recordmydesktop as a backend
 Group: Applications/System
-Requires: %{name} = %{version}-%{release}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description recordmydesktop
 fros plugin for screencasting using recordmydesktop as a backend
@@ -36,7 +33,7 @@ fros plugin for screencasting using recordmydesktop as a backend
 %package gnome
 Summary: fros plugin for screencasting using Gnome3 integrated screencaster
 Group: Applications/System
-Requires: %{name} = %{version}-%{release}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description gnome
 fros plugin for screencasting using Gnome3 integrated screencaster
@@ -48,19 +45,14 @@ fros plugin for screencasting using Gnome3 integrated screencaster
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 %install
-rm -rf %{buildroot}
-
 %{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 %check
 %{__python} setup.py test
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 
 %files
-%doc README
+%doc README COPYING
 %dir %{python_sitelib}/pyfros
 %{python_sitelib}/pyfros/*.py*
 %dir %{python_sitelib}/pyfros/plugins
