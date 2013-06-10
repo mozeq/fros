@@ -14,6 +14,7 @@ Source:         https://github.com/mozeq/fros/archive/%{commit}/%{name}-%{versio
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+BuildRequires:  python2-devel
 BuildRequires:  python-setuptools
 
 %description
@@ -25,7 +26,7 @@ while across various desktops and screencasting programs is seamless.
 %package recordmydesktop
 Summary: fros plugin for screencasting using recordmydesktop as a backend
 Group: Applications/System
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description recordmydesktop
 fros plugin for screencasting using recordmydesktop as a backend
@@ -33,7 +34,7 @@ fros plugin for screencasting using recordmydesktop as a backend
 %package gnome
 Summary: fros plugin for screencasting using Gnome3 integrated screencaster
 Group: Applications/System
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description gnome
 fros plugin for screencasting using Gnome3 integrated screencaster
