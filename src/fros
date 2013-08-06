@@ -19,6 +19,22 @@
 
 
 import sys
+
+from ctypes import cdll, util
+
+XLIB_PATH = util.find_library('X11')
+if not XLIB_PATH:
+    sys.stderr.write("Could not load X11 library\n")
+    sys.exit(1)
+
+XLIB = cdll.LoadLibrary(XLIB_PATH)
+DISPLAY = XLIB.XOpenDisplay(None)
+if DISPLAY == 0:
+    sys.stderr.write("Cannot connect to X server\n")
+    sys.exit(2)
+
+XLIB.XCloseDisplay(DISPLAY)
+
 from pyfros.froslogging import info, set_verbosity
 from pyfros.controls import Controls
 #pylint: disable=E0611
