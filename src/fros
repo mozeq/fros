@@ -19,7 +19,7 @@
 
 
 import sys
-from pyfros.froslogging import info, set_verbosity
+from pyfros.froslogging import error, info, set_verbosity
 from pyfros.controls import Controls
 #pylint: disable=E0611
 from gi.repository import Gtk
@@ -67,6 +67,10 @@ if __name__ == "__main__":
     if args.is_available:
         if available_plugins:
             sys.exit(0)
+        sys.exit(1)
+
+    if not available_plugins:
+        error(_("No screencasting plugin is available, please install plugin matching your environment (see: https://github.com/abrt/abrt/wiki/FAQ#screencasting)"))
         sys.exit(1)
 
     info("Selected plugin: ", available_plugins[0])
