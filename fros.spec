@@ -3,7 +3,7 @@ Version:        1.0
 Release:        1%{?dist}
 Summary:        Universal screencasting frontend with pluggable support for various backends
 
-%global commit 6168e025b9abd87835190f9aae31afdb5c5e4b27
+%global commit 988d73aea77ad0da5731983f6d45385db440e568
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Group:          Applications/System
