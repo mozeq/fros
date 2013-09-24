@@ -14,7 +14,11 @@ Source:         https://github.com/mozeq/fros/archive/%{commit}/%{name}-%{versio
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+%if 0%{?suse_version}
+BuildRequires:  python-devel
+%else
 BuildRequires:  python2-devel
+%endif
 BuildRequires:  python-setuptools
 
 %description
