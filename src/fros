@@ -44,6 +44,7 @@ from pyfros.i18n import _
 from pyfros import i18n
 import pyfros.plugins as plugins
 import argparse
+import types
 
 PLUGIN_DIR = "."
 
@@ -52,15 +53,15 @@ def load_plugins():
     loaded_plugins = []
     import inspect
     #pylint: disable=W0612
-    for name, obj in inspect.getmembers(plugins):
-        try:
-            plugin_instance = obj.getScreencastPluginInstance()
-            if plugin_instance.IsSuitable() > 0:  # append only suitable plugins
-                loaded_plugins.append(plugin_instance)
-                info("Added plugin:", plugin_instance)
-        #pylint: disable=W0703
-        except Exception, ex:
-            info("'{0}' is not a plugin: '{1}'".format(obj, ex))
+    for name, value in inspect.getmembers(plugins):
+        if not hasattr(value, "getScreencastPluginInstance"):
+            info("'{0}' is not a plugin".format(name))
+            continue
+
+        plugin_instance = value.getScreencastPluginInstance()
+        if plugin_instance.IsSuitable() > 0:  # append only suitable plugins
+            loaded_plugins.append(plugin_instance)
+            info("Added plugin:", plugin_instance)
 
     # return plugins sorted by their IsSuitable weight, the best match first
     return sorted(loaded_plugins, key=lambda plugin: plugin.IsSuitable(), reverse=True)

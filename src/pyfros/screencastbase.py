@@ -21,6 +21,7 @@ from pyfros.froslogging import info
 from gi.repository import Gdk
 import os
 import sys
+from subprocess import Popen, PIPE, STDOUT
 
 
 class ScreencastResult(object):
@@ -73,14 +74,14 @@ class ScreencastBase(object):
         self.wwidth = self.wroot.get_width()
         self.wheight = self.wroot.get_height()
 
-        xwininfo_com = ['xwininfo', '-frame']
-        (stdin, stdout, stderr) = os.popen3(xwininfo_com, 't')
-        wid = stdout.readlines()
-        stdin.close()
-        stdout.close()
-        stderr.close()
+        p = Popen(['xwininfo', '-frame'], stdout=PIPE, stderr=STDOUT, close_fds=True)
+
+        (wid, _) = p.communicate()
+        if p.wait() != 0:
+            result_handler(False)
+
         x = y = width = height = None
-        for i in wid:
+        for i in wid.decode('utf-8').split('\n'):
             if i.lstrip().startswith('Absolute upper-left X:'):
                 x = int(i.split(' ')[len(i.split(' '))-1])
             elif i.lstrip().startswith('Absolute upper-left Y'):

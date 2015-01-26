@@ -17,7 +17,7 @@
 
 from pyfros.screencastbase import ScreencastBase, ScreencastResult
 import pyfros.plugins.const as const
-import popen2
+from subprocess import Popen, PIPE
 import fcntl
 import os
 import signal
@@ -48,7 +48,7 @@ class ScreencastRecordMyDesktop(ScreencastBase):
         """
         if self.recorapp.poll() != -1:  # process died
             #Gtk.main_quit()  # encoding finished, so just close the window
-            print  # print empty line to to align the progress output
+            print()  # print empty line to to align the progress output
             self.screencast_done()
 
         strstdout = ""
@@ -58,13 +58,13 @@ class ScreencastRecordMyDesktop(ScreencastBase):
             # read only until ']' - the string we're trying to read is:
             # "[X%]" or "[XX%]"
             while self.recorapp.poll() == -1 and c != "]":
-                c = self.recorapp.fromchild.read(1)
+                c = self.recorapp.stdout.read(1)
                 strstdout += c
 
-        except IOError, ex:
+        except IOError:
             pass  # fd is non-blocking so we ignore "Resource unavailable"
 
-        except Exception, ex:
+        except Exception as ex:
             warn(ex)
 
         # child process prints some escape sequences to control the output on
@@ -81,7 +81,7 @@ class ScreencastRecordMyDesktop(ScreencastBase):
 
         self.enc_completed = float(num)
         percentage = self.enc_completed/100.0
-        if percentage > 1.0 or (self.recorapp.poll() != -1):
+        if percentage > 1.0 or (self.stdout.poll() != -1):
             percentage = 1.0
 
         self.progress_update(self.enc_completed)
@@ -92,7 +92,7 @@ class ScreencastRecordMyDesktop(ScreencastBase):
         self.output = os.path.join(os.getcwd(), "screencast.ogv")
 
     def ScreencastArea(self):
-        print "ScreencastArea ScreencastRecordMyDesktop"
+        print("ScreencastArea ScreencastRecordMyDesktop")
 
     def IsSuitable(self):
         return const.SUITABLE_DEFAULT  # 1 is default
@@ -111,9 +111,9 @@ class ScreencastRecordMyDesktop(ScreencastBase):
             "--height", str(self.height)
         ]
 
-        self.recorapp = popen2.Popen3(args, True, 0)
-        flags = fcntl.fcntl(self.recorapp.fromchild, fcntl.F_GETFL)
-        fcntl.fcntl(self.recorapp.fromchild, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+        self.recorapp = Popen(args, stdin=PIPE, stdout=PIPE, close_fds=True)
+        flags = fcntl.fcntl(self.recorapp.stdout, fcntl.F_GETFL)
+        fcntl.fcntl(self.recorapp.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
 
         self.recPid = self.recorapp.pid
         #if self.recPid != None:
@@ -128,5 +128,5 @@ class ScreencastRecordMyDesktop(ScreencastBase):
         self.screencast_done = end_handler
         os.kill(self.recPid, signal.SIGINT)
 
-        giochannel = GLib.IOChannel(filedes=self.recorapp.fromchild.fileno())
+        giochannel = GLib.IOChannel(filedes=self.recorapp.stdout.fileno())
         giochannel.add_watch(GLib.IO_IN | GLib.IO_HUP, self.enc_progress)
