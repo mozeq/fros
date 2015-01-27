@@ -1,9 +1,9 @@
 Name:           fros
-Version:        1.0
+Version:        1.1
 Release:        1%{?dist}
 Summary:        Universal screencasting frontend with pluggable support for various backends
 
-%global commit 988d73aea77ad0da5731983f6d45385db440e568
+%global commit 4f17dbbfe18081125b3f8099607899eaab87c2ec
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Group:          Applications/System
@@ -17,9 +17,9 @@ BuildArch:      noarch
 %if 0%{?suse_version}
 BuildRequires:  python-devel
 %else
-BuildRequires:  python2-devel
+BuildRequires:  python3-devel
 %endif
-BuildRequires:  python-setuptools
+BuildRequires:  python3-setuptools
 
 %description
 Universal screencasting frontend with pluggable support for various backends.
@@ -47,34 +47,41 @@ fros plugin for screencasting using Gnome3 integrated screencaster
 %setup -qn %{name}-%{commit}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 
 %install
-%{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
+%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 %check
-%{__python} setup.py test
+%{__python3} setup.py test
 
 
 %files
 %doc README COPYING
-%dir %{python_sitelib}/pyfros
-%{python_sitelib}/pyfros/*.py*
-%dir %{python_sitelib}/pyfros/plugins
-%{python_sitelib}/pyfros/plugins/__init__.*
-%{python_sitelib}/pyfros/plugins/const.*
+%dir %{python3_sitelib}/pyfros
+%{python3_sitelib}/pyfros/*.py*
+%dir %{python3_sitelib}/pyfros/__pycache__
+%{python3_sitelib}/pyfros/__pycache__/*.cpython-%{python3_version_nodots}.py*
+%dir %{python3_sitelib}/pyfros/plugins
+%{python3_sitelib}/pyfros/plugins/__init__.*
+%{python3_sitelib}/pyfros/plugins/const.*
+%dir %{python3_sitelib}/pyfros/plugins/__pycache__
+%{python3_sitelib}/pyfros/plugins/__pycache__/*.cpython-%{python3_version_nodots}.py*
 # fros-1.0-py2.7.egg-info
-%dir %{python_sitelib}/%{name}-%{version}-py2.7.egg-info
-%{python_sitelib}/%{name}-%{version}-py2.7.egg-info/*
+%dir %{python3_sitelib}/%{name}-%{version}-py%{python3_version}.egg-info
+%{python3_sitelib}/%{name}-%{version}-py%{python3_version}.egg-info/*
 %{_bindir}/fros
 %{_mandir}/man1/%{name}.1*
 
 %files recordmydesktop
-%{python_sitelib}/pyfros/plugins/*recordmydesktop.*
+%{python3_sitelib}/pyfros/plugins/*recordmydesktop.*
 
 %files gnome
-%{python_sitelib}/pyfros/plugins/*gnome.*
+%{python3_sitelib}/pyfros/plugins/*gnome.*
 
 %changelog
+* Tue Jan 27 2015 Jakub Filak <jmoskovc@redhat.com> 1.1-1
+- switch to Python3
+
 * Fri May 31 2013 Jiri Moskovcak <jmoskovc@redhat.com> 1.0-1
 - initial rpm

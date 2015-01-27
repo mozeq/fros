@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name='fros',
-    version='1.0',
+    version='1.1',
     author="Jiri Moskovcak",
     author_email="jmoskovc@redhat.com",
     description=("Universal screencasting frontend with pluggable support "
