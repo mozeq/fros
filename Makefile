@@ -8,7 +8,7 @@ download:
 	wget https://github.com/mozeq/fros/archive/`git rev-parse HEAD`/fros-1.0-`git rev-parse HEAD | cut -c -7`.tar.gz
 
 sdist:
-	python setup.py sdist
+	python3 setup.py sdist
 
 rpm: sdist
 	rpmbuild $(RPM_DIRS) -ba fros.spec
